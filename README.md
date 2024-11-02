@@ -19,7 +19,7 @@ Kit has 3 docker containers: **php, nginx** and **mysql**
 ## Installation
 
 Download the project<br>
-```composer create-project abduqayum/laravel-starter-kit```
+```composer create-project abduqayum/laravel-starter-kit:dev-master```
 
 Go to the project directory<br>
 ```cd laravel-starter-kit```
