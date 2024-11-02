@@ -27,10 +27,12 @@ Go to the project directory<br>
 Run docker containers <br>
 ```docker compose up -d```
 
-Give permission to bootstrap cache <br>
+Give permission to bootstrap cache and storage <br>
 ```docker compose exec php bash```
-```chmod -R 775 storage bootstrap/cache```
-```chown -R www-data:www-data storage bootstrap/cache```
+```chmod -R 775 storage bootstrap/cache``` <br>
+```chown -R www-data:www-data storage bootstrap/cache``` <br>
+```chmod -R 775 storage``` <br>
+```chown -R www-data:www-data storage``` <br>
 
 Run the migration <br>
 ```php artisan migrate```
