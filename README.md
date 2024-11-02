@@ -28,7 +28,7 @@ Run docker containers <br>
 ```docker compose up -d```
 
 Give permission to bootstrap cache and storage <br>
-```docker compose exec php bash```
+```docker compose exec php bash``` <br>
 ```chmod -R 775 storage bootstrap/cache``` <br>
 ```chown -R www-data:www-data storage bootstrap/cache``` <br>
 ```chmod -R 775 storage``` <br>
