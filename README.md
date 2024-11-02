@@ -1,66 +1,90 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Api Starter Kit
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+[//]: <> ( todo udpate image and add new docker commands, tell about interfaces )
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Starter kit for API with 
+[Symfony](https://symfony.com/), 
+[Doctrine](https://www.doctrine-project.org/), 
+[Maker Bundle](https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html), 
+[Migrations Bundle](https://symfony.com/doc/current/bundles/DoctrineMigrationsBundle/index.html), 
+[Api-Platform](https://api-platform.com/) and 
+[JWT-auth](https://jwt.io/). 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Kit has also already created User entity with all crud routes
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Kit has 3 docker containers: **php, nginx** and **mysql** 
 
-## Learning Laravel
+![poster](poster.png)
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Download the project<br>
+```composer create-project abduqayum/laravel-starter-kit```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Go to the project directory<br>
+```cd laravel-starter-kit```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Run docker containers <br>
+```docker compose up -d```
 
-## Laravel Sponsors
+Give permission to bootstrap cache <br>
+```docker compose exec php bash```
+```chmod -R 775 storage bootstrap/cache```
+```chown -R www-data:www-data storage bootstrap/cache```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Run the migration <br>
+```php artisan migrate```
 
-### Premium Partners
+Install composer scripts:<br>
+```docker compose exec php composer install```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+To install project run command:<br>
+```docker compose exec php bin/console ask:install```
 
-## Contributing
+**Done! You can open <a href="http://localhost:8507/api" target="_blank">http://localhost:8507/api</a> via browser. 
+By the way, you can change this port by changing ```DOCKER_NGINX_PORT``` variable in [.env](.env) file.** 
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## Docker
+For enter to php container run 
+```docker compose exec php bash```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+For enter to mysql container run 
+```docker compose exec mysql bash```
 
-## Security Vulnerabilities
+For enter to nginx container run 
+```docker compose exec nginx bash```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+You can change containers prefix by changing ```DOCKER_PROJECT_NAME``` variable in [.env](.env) file.  
 
-## License
+Also, you can change public ports of nginx and mysql by changing ```DOCKER_NGINX_PORT``` and ```DOCKER_DATABASE_PORT```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Database allows connections only from localhost. 
+Because of this when you use the project on production and want to connect to database from your computer
+you should connect via ssh bridge.
+
+## Cron
+
+You can use [docker/php/cron-file](docker/php/cron-file) for cron jobs. 
+After you must re-build php container by running command:<br> 
+```docker compose up -d --build```
+
+## Swagger 
+You can change project name and description on swagger by editing file
+[config/packages/api_platform.yaml](config/packages/api_platform.yaml)
+
+## Git Hook
+If you don't use any deploying system you can do <br>
+```cp docker/other-files/git/hooks/post-merge .git/hooks``` 
+
+In this way git always executes command ```bin/console ask:deploy```. 
+You can change this command in the file [src/Command/AskDeployCommand.php](src/Command/AskDeployCommand.php).
+This command will install requirements via composer, 
+clear caches, change owner of ./var and ./public/media folders to www-data, will run migrations. 
+
+## JWT keys
+For use Json Web Token system you must create private and public keys. 
+They are have already created when you install project. You can re-create them with:<br>  
+```bin/console ask:generate:jwtKeys```
+
+
